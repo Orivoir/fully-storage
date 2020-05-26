@@ -6,7 +6,7 @@
 
 - [store](#store)
 
-- [store usage](#basic-usage)
+- [store usage](#store-usage)
     - [create collection](#create-collection)
     - [create doc](#create-doc)
     - [get doc](#get-doc)
@@ -27,8 +27,8 @@
     - [delete](#delete)
         - [delete-collection](#delete-collection)
         - [delete-doc](#delete-doc)
-    - [add-collection]
-    - [dump]
+    - [add-collection](#add-collection)
+    - [dump](#dump)
         - [dump-collections-list](#dump-collections-list)
         - [dump-docs-list](#dump-docs-list)
 

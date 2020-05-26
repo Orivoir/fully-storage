@@ -17,7 +17,26 @@
     "type": "git",
     "url": "https://github.com/Orivoir/fully-storage.git"
   },
-  "keywords": [],
+  "keywords": [
+    "store",
+    "session",
+    "no-sql",
+    "db",
+    "database",
+    "http",
+    "middleware",
+    "storage",
+    "fully-storage",
+    "express",
+    "middleware",
+    "API",
+    "nosql",
+    "handler",
+    "manager",
+    "document",
+    "doc",
+    "collection"
+  ],
   "author": "S.GABORIEAU <sam.gabor@hotmail.com> (https://github.com/orivoir/)",
   "license": "BSD-2-CLAUSE",
   "devDependencies": {
