@@ -1,0 +1,30 @@
+[
+    {
+        "collection-parent": "fbar",
+        "state": {
+            "fbar": 42
+        }
+    },
+    {
+        "collection-parent": "fbar",
+        "state": {
+            "foobar": ["hi","world", 2.58]
+        }
+    },
+    {
+        "collection-parent": "unicorn",
+        "state": {
+            "foobar": ["hi","world", 2.58],
+            "fbar": 56,
+            "blabla": 42
+        }
+    },
+    {
+        "collection-parent": "unicorn",
+        "state": {
+            "foobar": ["hi","world", 2.58],
+            "fbar": 56,
+            "blabla": 42
+        }
+    }
+]

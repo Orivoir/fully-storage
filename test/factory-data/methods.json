@@ -1,0 +1,107 @@
+{
+    "isExistsCollection": {
+        "args": 1,
+        "argsType": [ "string" ],
+        "output": "boolean"
+    },
+    "isExistsDoc": {
+        "args": 2,
+        "argsType": [ "string", "number" ],
+        "output": "boolean"
+    },
+    "getDocName": {
+        "args": 2,
+        "argsType": [ "string", "number" ],
+        "output": "string"
+    },
+    "extractDocId": {
+        "args": 1,
+        "argsType": [ "string" ],
+        "output": "number"
+    },
+    "getPathDoc": {
+        "args": 2,
+        "argsType": [ "string", "number" ],
+        "output": "string"
+    },
+    "getDoc": {
+        "args": 2,
+        "argsType": [ "string", "number" ],
+        "output": "object"
+    },
+    "countDocs": {
+        "args": 1,
+        "argsType": [ "string", "boolean" ],
+        "output": "number"
+    },
+    "pushDoc": {
+        "args": 3,
+        "argsType": [ "string", "number", "object" ],
+        "output": "number"
+    },
+    "updateDoc": {
+        "args": 3,
+        "argsType": [ "string", "number", "object", "boolean" ],
+        "output": "number"
+    },
+    "addDoc": {
+        "args": 2,
+        "argsType": [ "string", "object" ],
+        "output": "number"
+    },
+    "deleteDoc": {
+        "args": 2,
+        "argsType": [ "string", "object" ],
+        "output": true
+    },
+    "deleteCollection": {
+        "args": 1,
+        "argsType": [ "string" ],
+        "output": true
+    },
+    "clearCollection": {
+        "args": 1,
+        "argsType": [ "string" ],
+        "output": "undefined"
+    },
+    "addCollection": {
+        "args": 1,
+        "argsType": [ "string" ],
+        "output": true
+    },
+    "onRequest": {
+        "args": 3,
+        "argsType": [ "object","object","function" ],
+        "output": "undefined"
+    },
+    "isClientHTTP": {
+        "args": 2,
+        "argsType": [ "string","string" ],
+        "output": "boolean"
+    },
+    "getClientHTTP": {
+        "args": 1,
+        "argsType": [ "string" ],
+        "output": "object"
+    },
+    "getSessionDocs": {
+        "args": 0,
+        "argsType": [],
+        "output": "array"
+    },
+    "onClearSession": {
+        "args": 0,
+        "argsType": [],
+        "output": "undefined"
+    },
+    "sessionStart": {
+        "args": 1,
+        "argsType": ["object"],
+        "output": "function"
+    },
+    "sessionStop": {
+        "args": 0,
+        "argsType": [],
+        "output": "undefined"
+    }
+}

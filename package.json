@@ -1,0 +1,32 @@
+{
+  "name": "fully-storage",
+  "version": "1.0.0",
+  "description": "is a simple no-sql data store with an HTTP session manager implemented",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "bin": {
+    "storage": "./bin/fully-storage.js"
+  },
+  "scripts": {
+    "test": "mocha ./test",
+    "coverage": "nyc npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Orivoir/fully-storage.git"
+  },
+  "keywords": [],
+  "author": "S.GABORIEAU <sam.gabor@hotmail.com> (https://github.com/orivoir/)",
+  "license": "BSD-2-CLAUSE",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.2.0",
+    "nyc": "^15.0.1"
+  },
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "cliui": "^6.0.0"
+  }
+}
