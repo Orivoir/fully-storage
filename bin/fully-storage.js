@@ -46,393 +46,72 @@ const
     cliui = require('cliui')(),
     cwd = process.cwd(),
     chalk = require('chalk'),
-    COLLECTION_AND_DOC_PATTERN = /^[a-z]{1}[a-z\d\_\-]{1,63}$/i
+    COLLECTION_AND_DOC_PATTERN = /^[a-z]{1}[a-z\d\_\-]{1,63}$/i,
+    {
+        version,
+        deleteCollection,
+        _export,
+        deleteDoc,
+        clear,
+        addCollection,
+        collectionsDump,
+        dump,
+        _import
+    } = require('./lib/endpoint'),
     Storage = require('./../index')
 ;
 
 global.Storage = Storage;
+global.argsNotParams = argsNotParams;
+global.isExistsArg = isExistsArg;
+global.isExistsArgWithPattern = isExistsArgWithPattern;
+global.pkg = pkg;
+global.COLLECTION_AND_DOC_PATTERN = COLLECTION_AND_DOC_PATTERN;
+global.cwd = cwd;
+global.chalk = chalk;
 
 if( isExistsArg( 'version' ) ) {
 
-    console.log(
-        chalk`\n\t{bold.cyan full-storage} version {bold.green ${pkg.version} }\n\n\tAuthor {bold.cyan ${pkg.author}}\n`
-    );
-
-    process.exit( null );
+    version();
 
 } else if( isExistsArgWithPattern( /^delete(\-collection(\-?(n|N)ame)?)?$/i ) ) {
 
-    const collectionName = argsNotParams[0].trim();
-
-    if( COLLECTION_AND_DOC_PATTERN.test( collectionName ) ) {
-
-        if( Storage.isExistsCollection( collectionName ) ) {
-
-            Storage.deleteCollection( collectionName );
-
-            console.log(
-                chalk`\n\t{bold.green Success:} the collection: {bold.cyan ${collectionName}}, have been removed with success.`
-            );
-
-        } else {
-
-            console.log(
-                chalk`\n\t{bold.yellow Warning:} the collection with name: {bold.cyan ${collectionName}}, not exists.`
-            );
-        }
-
-        process.exit( null );
-
-    } else {
-
-        console.log(
-            chalk`\n\t{bold.red Error:} collection name: {bold.cyan ${collectionName}}, format invalid`
-        );
-
-        process.exit( 1 );
-    }
+    deleteCollection();
 
 } else if( isExistsArg('export') ) {
 
-    const collectionName = argsNotParams[0].trim();
-
-    // default path is root project
-    let path = cwd;
-
-    if( isExistsArg('path') ) {
-
-        path = argsNotParams[1].trim();
-
-        if( !pathResolver.isAbsolute( path ) ) {
-
-            path = pathResolver.join( cwd, path );
-        }
-
-        if( !fs.existsSync( path ) ) {
-
-            console.log(
-                chalk`\n\t{bold.red Error:} path remote collection: {bold.yellow "${path}"}, not exists.`
-            );
-
-            process.exit( 1 );
-
-        } else {
-
-            const scan = fs.statSync( path );
-
-            if( !scan.isDirectory() ) {
-
-                console.log(
-                    chalk`\n\t{bold.red Error:} path remote collection: {bold.yellow "${path}"}, should be a directory.`
-                );
-
-                process.exit( 1 );
-            }
-        }
-    }
-
-    if( !Storage.isExistsCollection( collectionName ) ) {
-
-        console.log(
-            chalk`\n\t{bold.yellow Warning:} collection: {bold.cyan ${collectionName}}, not exists.`
-        );
-
-        process.exit( null );
-    } else {
-
-        const docsname = Storage.getDocsList( collectionName );
-
-        if( !docsname.length ) {
-
-            console.log(
-                chalk`\n\t{bold.yellow Warning:} collection: {bold.cyan ${collectionName}}, is empty.`
-            );
-
-            process.exit( null );
-        } else {
-
-            docsname.forEach(docname => {
-
-                const docId = Storage.extractDocId( docname );
-
-                fs.writeFileSync(
-                    pathResolver.join(path, docname),
-                    JSON.stringify(
-                        Storage.getDoc(
-                            collectionName,
-                            docId
-                        )
-                    ),
-                    'utf-8'
-                );
-
-            } );
-
-            console.log(
-                chalk`\n\t{bold.green Success:} {bold.yellow ${docsname.length}} docs, from: {bold.cyan ${collectionName}} has been added in: {bold.yellow "${path}"}`
-            );
-
-            process.exit( null );
-        }
-    }
+    _export( {
+        pathResolver,
+        fs
+    } );
 
 } else if( isExistsArg('delete-doc') ) {
 
-    // > storage --delete-doc collectionName.docId
+    deleteDoc();
 
-    let [collectionName,docId] = argsNotParams[0].trim().split('.');
-
-    if( COLLECTION_AND_DOC_PATTERN.test( collectionName ) ) {
-
-        docId = parseInt( docId );
-
-        if( !isNaN( docId ) ) {
-
-            if( Storage.isExistsCollection( collectionName ) ) {
-
-                if( Storage.isExistsDoc( collectionName, docId ) ) {
-
-                    Storage.deleteDoc( collectionName, docId );
-
-                    console.log(
-                        chalk`\n\t{bold.green Success:} doc with id: {bold.yellow ${docId}} from collection: {bold.cyan ${collectionName}} has been removed.`
-                    );
-
-                    process.exit( null );
-
-                } else {
-
-                    console.log(
-                        chalk`\n\t{bold.yellow  Warning:} doc with id: {bold.yellow ${docId}} from collection: {bold.cyan ${collectionName}}, not exists.`
-                    );
-
-                    process.exit( null );
-
-                }
-
-            } else {
-
-                console.log(
-                    chalk`\n\t{bold.yellow Warning:} collection: {bold.cyan ${collectionName}}, not exists.`
-                );
-
-                process.exit( null );
-            }
-
-        } else {
-
-            console.log(
-                chalk`\n\t{bold.red Error:} the doc id should be number`
-            );
-
-            process.exit( 1 );
-
-        }
-
-    } else {
-
-        console.log(
-            chalk`\n\t{bold.red Error:} collection name format invalid`
-        );
-
-        process.exit( 1 );
-    }
 } else if( isExistsArg( 'clear' ) ) {
 
-    const collectionsList = Storage.getCollectionsList();
-
-    if( !collectionsList.length ) {
-
-        console.log(
-            chalk`\n\t{bold.yellow Warning:} collections list is already clear.`
-        );
-
-        process.exit( null );
-
-    } else {
-
-        Storage.deleteAllCollections();
-
-        console.log(
-            chalk`\n\t{bold.green Success:} {bold.yellow ${collectionsList.length}} collection.s have been removed with success`
-        );
-
-        process.exit( null );
-    }
+    clear();
 
 } else if( isExistsArg( 'add-collection' ) ) {
 
-    const collectionName = argsNotParams[0].trim();
 
-    if( Storage.isExistsCollection( collectionName ) ) {
+    addCollection();
 
-        console.log(
-            chalk`\n\t{bold.yellow Warning:} collection {bold.cyan ${collectionName}} already exists.`
-        );
-
-    } else if( !COLLECTION_AND_DOC_PATTERN.test( collectionName ) ) {
-
-        console.log(
-            chalk`\n\t{bold.yellow Warning:} collection name format invalid`
-        );
-
-    } else {
-
-        Storage.addCollection( collectionName );
-
-        console.log(
-            chalk`\n\t{bold.green Success:} collection {bold.cyan ${collectionName}} have been created`
-        );
-
-    }
-
-    process.exit( null );
 } else if( isExistsArgWithPattern( /collections?\-(list|dump|show)/i ) )  {
 
-    const collectionsList = Storage.getCollectionsList();
+    collectionsDump();
 
-    console.log(
-        chalk`\n\t {bold.yellow ${collectionsList.length}} collection.s found.s`
-    );
-
-    collectionsList.forEach( collectionName => {
-
-        if( typeof collectionName === "object" ) {
-
-            collectionName = collectionName.name;
-        }
-
-        const docsLength = Storage.countDocs( collectionName );
-
-        console.log(
-            chalk`\n\t\t> collection {bold.cyan ${collectionName}} have {bold.yellow ${docsLength}} docs`
-        );
-
-    } );
-
-    console.log('\n\n');
 } else if( isExistsArgWithPattern( /^(list|dump|show)$/i ) ) {
 
-    const collectionName = argsNotParams[0];
-
-    if( Storage.isExistsCollection( collectionName ) ) {
-
-        const docs = Storage.getDocsList( collectionName );
-
-        console.log(
-            chalk`\n\tcollection {bold.cyan ${collectionName}} have {bold.yellow ${docs.length}} docs:`
-        );
-
-        docs.forEach( docname => {
-
-            const pathDoc = Storage.getPathDocByDocname( docname );
-
-            const doc = require( pathDoc );
-
-            console.log(
-                chalk`\n\t\t> {bold.cyan ${docname}}: ({bold.yellow ${Object.keys(doc).length}} keys)\n`
-            );
-
-            console.log( '\t\t{' );
-
-            Object.keys( doc ).forEach( attribute => {
-
-                let value = doc[attribute];
-
-                if( typeof value === 'string' ) {
-
-                    value = chalk`{bold.green "${value}"}`
-                } else if( typeof value === "number" ) {
-
-                    value = chalk`{bold.yellow ${value}}`
-                }
-
-                console.log( '\t\t  ', attribute,': ', value );
-
-            } );
-
-            console.log('\t\t}\n');
-        } );
-
-        console.log("\n\n");
-
-        process.exit( null );
-
-    } else {
-        console.log(
-            chalk`\n\t{bold.yellow Warning:} collection {bold.cyan ${collectionName}}, not exists.\n`
-        );
-
-        process.exit( null );
-    }
+    dump();
 
 } else if( isExistsArg( 'import' ) ) {
 
-    const collectionName = argsNotParams[0].trim();
-
-    const path = pathResolver.join(
-        cwd,
-        argsNotParams[1].trim()
-    );
-
-    if( fs.existsSync( path ) ) {
-
-        if( !Storage.isExistsCollection( collectionName ) ) {
-
-            Storage.addCollection( collectionName );
-
-            console.log(
-                chalk`\n{bold.green Added:} collection {bold.cyan ${collectionName}}`
-            );
-
-            let countsDocAdd = 0;
-
-            fs.readdirSync( path, {
-                encoding: 'utf-8',
-                withFileTypes: true
-            } )
-            .map( item => item.name  )
-            .filter( item => (
-                item.split('.').pop() === 'json'
-            ) )
-            .filter( item => (
-                item.split('-')[0] === collectionName
-            ) )
-            .forEach( item => {
-
-                const doc = require(
-                    pathResolver.join( path, item )
-                );
-
-                Storage.addDoc( collectionName, doc );
-
-                console.log(
-                    chalk`\t{bold.green Added:} doc {bold.cyan ${item}}`
-                );
-
-                countsDocAdd++;
-
-            } );
-
-            console.log(
-                chalk`\n\n{bold.green Added:} {bold.yellow ${countsDocAdd}} docs\n`
-            );
-
-        } else {
-
-            console.log(
-                chalk`{bold.yellow Warning:} the collection {bold.cyan ${collectionName}} already exists.`
-            );
-
-        }
-
-    } else {
-
-        console.log(
-            chalk`{bold.red Error:} the path: {bold.yellow ${path}} not exists.`
-        );
-
-    }
+    _import({
+        pathResolver,
+        fs
+    })
 }
 
 else {
