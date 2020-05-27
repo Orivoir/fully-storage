@@ -360,7 +360,7 @@ const Storage = {
 
         const collectionName = docname.split('-')[0];
 
-        const docId = docname.split('-')[1].split('.')[0];
+        const docId = docname.split('-').pop().split('.')[0];
 
         return [ collectionName, docId ];
 
