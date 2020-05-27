@@ -25,12 +25,13 @@
         - [export](#export)
         - [import](#import)
     - [delete](#delete)
-        - [delete-collection](#delete-collection)
-        - [delete-doc](#delete-doc)
-    - [add-collection](#add-collection)
+        - [delete collection](#delete-collection)
+        - [delete doc](#delete-doc)
+    - [add collection](#add-collection)
+    - [regenerate collection](#regenerate-collection)
     - [dump](#dump)
-        - [dump-collections-list](#dump-collections-list)
-        - [dump-docs-list](#dump-docs-list)
+        - [dump collections list](#dump-collections-list)
+        - [dump docs list](#dump-docs-list)
 
 ## installtation
 
@@ -61,7 +62,7 @@ const fullyStorage = require('fully-storage');
 
 ### create collection
 
-A collection is a new list of docs ( entries ), you can made a collect*ions for data game of: users, commentaries, articles...
+A collection is a new list of docs ( entries ), you can made a collections for data game of: users, commentaries, articles...
 
 ```js
 
@@ -98,8 +99,8 @@ console.log( docId );
 ```
 
 You can see fully storage have attribute a uniq id for doc ( number auto increment ) but your entry article have not id,
-you can update the doc and add the `docId`, but more easy give third arg with `true` value for fully-storage auto add id key inside your
-doc with the value equal to the docId.
+you can update the doc and add the `docId`, but more easy give *third arg* with `true` value for **fully-storage** auto add id key inside your
+doc with the value equal to the `docId`.
 
 ```js
 const collectionName = "article";
@@ -437,20 +438,15 @@ or you can access to cli with:
 
 #### export
 
-The command `export`, traced back the store from: node_modules folders
-to: your project
+This command export all collections from node_modules folders to root of your project
 
 with npm key script:
 ```bash
-> npm run store -- --export articles --path ./collections/articles
+> npm run store -- --export
 ```
 
-The folders `collections` and `articles` should exists before execute command,
-the `--path` argument is optional but is recomanded,
-if you dont give `--path` argument the docs is traced back inside root of your project.
-
-You should execute this command before remove the node_modules, folder
-for not lost your store data
+You should execute this command before remove/regenerate the node_modules, folder
+for not lost your store data.
 
 ```bash
 > ./node_modules/bin/storage --export articles --path ./collections/articles
@@ -458,18 +454,15 @@ for not lost your store data
 
 #### import
 
-if you have need import a collection you can use the `import` command
+
+This command **import** all collections from *./collections* folder to */node_modules/* folder
 
 with npm key script:
 ```bash
-> npm run store -- --import articles --path ./collections/articles
+> npm run store -- --import
 ```
 
-Here article is the collection name create and the docs
-inside articles is the docs import,
-if the collection articles already exists command is reject.
-
-You should execute this command after have regenrate the node_modules folder
+You should execute this command after have regenerate the node_modules folder.
 
 ### delete
 
@@ -504,7 +497,7 @@ with npm key script:
 
 ### add collection
 
-You can create a new empty collection:
+You can create a new empty collection with `add-collection` command:
 
 ```bash
 > npm run store -- --add-collection users
@@ -515,6 +508,19 @@ You can create a new empty collection:
 ```
 
 if collection already exists command is reject.
+
+## regenerate collection
+
+You can remove all docs from a collection with `regenerate` command:
+
+
+```bash
+> npm run store -- --regenerate articles
+```
+
+```bash
+> ./node_modules/bin/storage --regenerate articles
+```
 
 ### dump
 

@@ -1,3 +1,9 @@
+# [1.1.0](https://github.com/Orivoir/fully-storage/pull/1)
+
+- refactoring bin script *( one file one command )* [ref](https://github.com/Orivoir/fully-storage/pull/1/commits/f80551e053dfd4109d62ddedbf9f835d606be5e0)
+
+- add regenerate command, optimize import and export command with a code base remove arg path for import/export command, fix bug show author as `[Object Object]` from version command [ref](https://github.com/Orivoir/fully-storage/pull/1/commits/8a699391944837db964eac8405f29d6a7e87d1a3)
+
 # [1.0.2](https://github.com/Orivoir/fully-storage/commit/47f35d881c4bcebf0e0b546c0524a36c785f5135)
 
 - Fix default folder *collections* at root, not exists in prod.
