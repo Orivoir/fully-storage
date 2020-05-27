@@ -7,6 +7,7 @@ const addCollection = require('./add-collection');
 const collectionsDump = require('./collections-dump');
 const dump = require('./dump');
 const _import = require('./import');
+const regenerate = require('./regenerate');
 
 module.exports = {
     version,
@@ -17,5 +18,6 @@ module.exports = {
     addCollection,
     collectionsDump,
     dump,
-    _import
+    _import,
+    regenerate
 };

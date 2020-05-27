@@ -56,7 +56,8 @@ const
         addCollection,
         collectionsDump,
         dump,
-        _import
+        _import,
+        regenerate
     } = require('./lib/endpoint'),
     Storage = require('./../index')
 ;
@@ -69,6 +70,7 @@ global.pkg = pkg;
 global.COLLECTION_AND_DOC_PATTERN = COLLECTION_AND_DOC_PATTERN;
 global.cwd = cwd;
 global.chalk = chalk;
+global.__root = pathResolver.resolve( __dirname, './../' );
 
 if( isExistsArg( 'version' ) ) {
 
@@ -112,6 +114,9 @@ if( isExistsArg( 'version' ) ) {
         pathResolver,
         fs
     })
+} else if( isExistsArgWithPattern( /(regenerate|truncate)/i ) ) {
+
+    regenerate();
 }
 
 else {
@@ -124,30 +129,34 @@ else {
 
     const commandsList = [
         {
-            describe: "exports all docs of a collection from node_modules folders",
+            describe: "exports all docs from node_modules folders",
             params: [
                 {
                     name: "--export",
                     isRequired: true,
-                }, {
-                    name: "--path",
-                    isRequired: false
+                }
+            ],
+            eg: "--exports"
+        },
+        {
+            describe: "import all docs and create new collections from collections folder at root of your project",
+            params: [
+                {
+                    name: "--import",
+                    isRequired: true,
                 }
             ],
             eg: "--exports collectionName"
         },
         {
-            describe: "import all docs and create a new collection from any folders",
+            describe: "remove all docs of a collection but not remove collection",
             params: [
                 {
-                    name: "--import",
+                    name: "--regenerate",
                     isRequired: true,
-                }, {
-                    name: "--path",
-                    isRequired: true
                 }
             ],
-            eg: "--exports collectionName --path ./collections/collectionName"
+            eg: "--regenerate collectionName"
         },
         {
             describe: "create a new collection",
