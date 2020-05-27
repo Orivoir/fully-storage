@@ -415,10 +415,12 @@ you can use the manager session as middleware with [Express](https://npmjs.com/p
 
 ## cli usage
 
-the fully-storage implement a CLI for have overview handler of store
-and resolve the /node_modules/ storage
+**fully-storage** implement a CLI for have overview of data store
+and for can export data store from  `/node_modules/`
+from your project before *remove/regenerate* `/node_modules/`
+and more up...
 
-from your package.json you can add scripts key
+from your `package.json` you can add scripts key
 
 ```json
 {
@@ -449,7 +451,7 @@ You should execute this command before remove/regenerate the node_modules, folde
 for not lost your store data.
 
 ```bash
-> ./node_modules/bin/storage --export articles --path ./collections/articles
+> ./node_modules/bin/storage --export
 ```
 
 #### import
