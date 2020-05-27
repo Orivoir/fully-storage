@@ -13,6 +13,14 @@
 const fs = require('fs');
 const pathResolver = require('path');
 
+if( !fs.existsSync(
+    pathResolver.join( __dirname, "collections" )
+) ) {
+    fs.mkdirSync(
+       pathResolver.join( __dirname, "collections" )
+    );
+}
+
 const Storage = {
 
     get IS_FORCE() {
