@@ -4,8 +4,6 @@
 
 [![Node.js CI](https://github.com/Orivoir/fully-storage/workflows/Node.js%20CI/badge.svg)](https://github.com/Orivoir/fully-storage/actions)
 
-[![CLI video basic usage](./readme-contents/micro-sd.svg)](./readme-contents/fully-storage-readme.mp4)
-
 - [installation](#installtation)
 
 - [store](#store)
