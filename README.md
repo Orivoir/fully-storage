@@ -2,6 +2,10 @@
 
 > fully-storage is a simple **no-sql** data store with an **HTTP session** manager implemented
 
+[![Node.js CI](https://github.com/Orivoir/fully-storage/workflows/Node.js%20CI/badge.svg)](https://github.com/Orivoir/fully-storage/actions)
+
+[![CLI video basic usage](./readme-contents/micro-sd.svg)](./readme-contents/fully-storage-readme.mp4)
+
 - [installation](#installtation)
 
 - [store](#store)
@@ -16,9 +20,9 @@
     - [stat doc](#stat-doc)
     - [delete collection](#delete-collection)
     - [collection list](#collection-list)
-- [HTTP session manager](#HTTP-session-manager)
-    - [session-start](#session-start)
-    - [session-stop](#session-stop)
+- [HTTP session manager](#http-session-manager)
+    - [session- tart](#session-start)
+    - [session stop](#session-stop)
     - [usage as middleware](#usage-as-middleware)
 - [CLI usage](#cli-usage)
     - [workflow](#workflow)
@@ -343,7 +347,7 @@ You can get the list of collections with attribute:
 
 `fullyStorage.collectionsList`
 
-## HTTP session manager
+## http session manager
 
 You can use fully-storage as manager HTTP session,
 very easy usage the recognize client is based on user-agent of
