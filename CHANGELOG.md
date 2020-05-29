@@ -1,3 +1,7 @@
+# 1.2.1
+
+- Add exemple usage HTTP session as middleware with Express
+
 # [1.2.0](https://github.com/Orivoir/fully-storage/pull/2)
 
 - Added **users API**, handler collection as *users collection*

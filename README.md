@@ -578,7 +578,40 @@ you can use the manager session as middleware with [Express](https://npmjs.com/p
 
 ```js
 
+const express = require('express');
+
+const app = express();
+
+const server = require('http').Server( app );
+
+const fullyStorage = require('fully-storage');
+
+const sessionMiddleware = fullyStorage.sessionStart( {
+    expires: ( 1e3 * 60 * 60 ) // 1hours
+} ) ;
+
+app.use( sessionMiddleware );
+
+app.get('/', (request, response) => {
+
+    if( !request.session.test ) {
+
+        request.session.test = Math.random();
+        request.session.save();
+    }
+
+    response.type('plain/text');
+    response.status( 200 );
+
+    response.send( `session test with: ${request.sesssion.test}` );
+
+} );
+
+server.listen( 3001 );
 ```
+
+You should call the **synchrone** method `request.session.save`
+for persists update session data, between HTTP request.
 
 ## cli usage
 
