@@ -1,17 +1,6 @@
-/*
-    / collections
-        / users
-            - {id-doc}.json
-        / {doc-name}
-            - {id-doc}.json
-
-    doc {
-        "column-name": "column-value"
-    }
-*/
-
 const fs = require('fs');
 const pathResolver = require('path');
+const UsersApi = require('fully-storage-users-api')
 
 if( !fs.existsSync(
     pathResolver.join( __dirname, "collections" )
@@ -36,6 +25,8 @@ const Storage = {
     isStartSession: false,
     sessionOptions: null,
     expiresID: null,
+
+    apis: {},
 
     sessionStart( {
         expires = ( 1e3 * 60 * 60 ), // 1hours default expires session
@@ -646,8 +637,33 @@ const Storage = {
             }
 
         } );
-    }
+    },
 
+    addUsersCollection( config ) {
+
+        UsersApi.STORAGE_METHODS_NAME_IMPLEMENTS.forEach( methodName => {
+
+            if( this[ methodName ] instanceof Function ) {
+
+                throw new RangeError('UserAPI already call on this storage.');
+            }
+
+        } );
+
+        if( typeof config === "object" ) {
+
+            this.apis.users = new UsersApi( config );
+
+            this.apis.users.storage = this;
+
+            this.apis.users.addUsersCollection();
+
+        } else {
+
+            throw new RangeError('Storage Error: addUsersCollection method arg1: config ,should be a object');
+        }
+
+    }
 };
 
 module.exports = Storage;

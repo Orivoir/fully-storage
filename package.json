@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "chalk": "^4.0.0",
-    "cliui": "^6.0.0"
+    "cliui": "^6.0.0",
+    "fully-storage-users-api": "^1.0.25"
   }
 }

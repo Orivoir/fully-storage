@@ -18,6 +18,12 @@
     - [stat doc](#stat-doc)
     - [delete collection](#delete-collection)
     - [collection list](#collection-list)
+    - [apis](#apis)
+        - [users](#users)
+            - [users collection](#users-collection)
+            - [add user](#add-user)
+            - [authentication](#authentication)
+            - [get user](#get-user)
 - [HTTP session manager](#http-session-manager)
     - [session- tart](#session-start)
     - [session stop](#session-stop)
@@ -344,6 +350,165 @@ You can delete a collection with:
 You can get the list of collections with attribute:
 
 `fullyStorage.collectionsList`
+
+### apis
+
+In more of basic usage of **fully-storage** you can use a handler for specific collections,
+the handler automate or reduce tasks standard of a collection.
+
+#### users
+
+If you stock *users* data with **fully-storage** you can use a **API** already implemented.
+
+##### users collection
+
+Create a new **users collection** use the method
+
+`fullyStorage.addUsersCollection( config: object )`
+
+you should give a object config for handler of **users**
+
+```js
+
+const config = {
+
+    collectionName: "users", // default: "users"
+
+    // default: null
+    passwordHash: {
+        // currently only bcrypt is support
+        hash: "bcrypt",
+        cost: 13, // default: 13
+    },
+
+    // list keys should be uniq
+    // default: []
+    uniqKeys: [
+        'email'
+    ]
+
+    // key constraints for authorize authentication
+    // default: null
+    constraintsAuthentication: {
+
+        isRemoveAccount: false,
+        isLockAccount: false,
+        isValidateAccount: true
+    },
+
+    // api can auto generate specific key for a new user
+    // default: ['id','token']
+    autoGenerate: [
+        'id',
+        'createAt',
+        'token'
+    ],
+
+
+};
+
+fullyStorage.addUsersCollection( config );
+
+```
+
+##### add user
+
+You can use the method: `fullyStorage.addUser( user: object )`
+for add a new user.
+
+```js
+
+const user = {
+    username: 'Orivoir21',
+    password: 'secret ^.^',
+    email: 'unicorn@gmail.com'
+};
+
+const response = fullyStorage.addUser( user );
+
+console.log( response );
+```
+
+If not uniq keys have reject add user,
+the user will added
+
+```bash
+response add user {
+
+    success: boolean,
+
+    ?user: object,
+
+    ?error: string,
+
+    ?uniqKeysError: string[]
+}
+```
+
+##### authentication
+
+you can automate authentication user with `fullyStorage.authentication( credentials: object )` method:
+
+```js
+
+const credentials = {
+    login: 'unicorn@gmail.com',
+    password: 'secret ^.^'
+};
+
+const response = fullyStorage.authentication( credentials );
+
+```
+
+The `login` key is used as `email` key, if you want logged a user with a other key
+you can replace the key `login` by the real key name.
+
+*e.g:*
+```js
+
+const credentials = {
+    username: 'Orivoir21',
+    password: 'secret ^.^'
+};
+
+const response = fullyStorage.authentication( credentials );
+```
+
+The key **password** with the **plain password** should be exists, but you can choice the **login key**.
+
+If the login password matches with any user and constraints authentication not reject authentications, its success authentication.
+
+```bash
+response authentication {
+
+    success: boolean,
+    isLoginExists: boolean,
+
+    ?error: string,
+    ?errorMuted: string
+    ?constraintsAuthentication: object
+}
+```
+
+##### get user
+
+You can easy get user.s with any schema use the method:
+
+`fullyStorage.getUsersBy( schema: object )`
+
+```js
+
+const users = fullyStorage.getUsersBy( {
+    username: "Orivoir21"
+} );
+
+console.log( users );
+
+```
+
+The method: `getUserBy` return a array of `users`
+if **0** users have found return empty array
+
 
 ## http session manager
 
