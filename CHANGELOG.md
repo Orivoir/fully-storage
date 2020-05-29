@@ -1,3 +1,8 @@
+# [1.2.0](https://github.com/Orivoir/fully-storage/pull/2)
+
+- Added **users API**, handler collection as *users collection*
+- Upgrade **README.md** for add usage **users API**
+
 # [1.1.0](https://github.com/Orivoir/fully-storage/pull/1)
 
 - refactoring bin script *( one file one command )* [ref](https://github.com/Orivoir/fully-storage/pull/1/commits/f80551e053dfd4109d62ddedbf9f835d606be5e0)
