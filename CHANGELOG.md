@@ -1,3 +1,8 @@
+# 1.3.0
+
+- Fix command dump collection with a collection name composed: `foo-bar`
+- Fix in: `onRequest` middleware handler HTTP session method save implemented in `request.session` is remove after call, and cant save many time in single request.
+
 # 1.2.1
 
 - Add exemple usage HTTP session as middleware with Express

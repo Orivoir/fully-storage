@@ -180,6 +180,8 @@ const Storage = {
             // use save method after change
             // for upgrade lastUpdate at
             // for clear session data after expires delay
+
+            const saveFunc = request.session.save;
             delete request.session.save;
 
             request.session.lastUpdate = Date.now();
@@ -199,6 +201,8 @@ const Storage = {
                 }
 
             } );
+
+            request.session.save = saveFunc;
         } ;
 
         // free midlleware
@@ -349,7 +353,7 @@ const Storage = {
 
     explodeDocname( docname ) {
 
-        const collectionName = docname.split('-')[0];
+        const collectionName = docname.split('-').slice( 0, -1 ).join('-');
 
         const docId = docname.split('-').pop().split('.')[0];
 
