@@ -25,7 +25,7 @@
             - [authentication](#authentication)
             - [get user](#get-user)
 - [HTTP session manager](#http-session-manager)
-    - [session- tart](#session-start)
+    - [session start](#session-start)
     - [session stop](#session-stop)
     - [usage as middleware](#usage-as-middleware)
 - [CLI usage](#cli-usage)
@@ -617,7 +617,7 @@ for persists update session data, between HTTP request.
 
 **fully-storage** implement a CLI for have overview of data store
 and for can export data store from  `/node_modules/`
-from your project before *remove/regenerate* `/node_modules/`
+to your project before *remove/regenerate* `/node_modules/`
 and more up...
 
 from your `package.json` you can add scripts key

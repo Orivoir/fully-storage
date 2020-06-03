@@ -1,3 +1,7 @@
+# 1.3.1
+
+- Optimize README.md, fix anchor and add minor precision
+
 # 1.3.0
 
 - Fix command dump collection with a collection name composed: `foo-bar`
