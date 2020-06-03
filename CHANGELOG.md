@@ -1,3 +1,8 @@
+# 1.3.2
+
+- Optimize README.md add link to example app usage manager session HTTP
+- Optimize README.md add link to example app basic usage storage nosql
+
 # 1.3.1
 
 - Optimize README.md, fix anchor and add minor precision

@@ -6,6 +6,8 @@
 
 - [installation](#installtation)
 
+- [example app](#example-app)
+
 - [store](#store)
 
 - [store usage](#store-usage)
@@ -54,6 +56,12 @@ or with yarn
 ```bash
 yarn add fully-storage
 ```
+
+## example app
+
+[manager session inside easy todolist app](https://github.com/Orivoir/fully-storage-session)
+
+[storage nosql inside easy articles app](https://github.com/Orivoir/fully-storage-factory)
 
 ## store
 
