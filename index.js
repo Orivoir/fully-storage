@@ -1,6 +1,7 @@
 const fs = require('fs');
 const pathResolver = require('path');
-const UsersApi = require('fully-storage-users-api')
+const UsersApi = require('fully-storage-users-api');
+const ManagerSession = require('./lib/manager-session/manager-session');
 
 if( !fs.existsSync(
     pathResolver.join( __dirname, "collections" )
@@ -23,192 +24,47 @@ const Storage = {
     },
 
     isStartSession: false,
-    sessionOptions: null,
     expiresID: null,
+    sessionManager: [],
 
     apis: {},
 
-    sessionStart( {
-        expires = ( 1e3 * 60 * 60 ), // 1hours default expires session
-        isClearBetweenCall = true
-    } ) {
+    getSessionManager() {
 
-        if( this.isStartSession ) {
-            throw "start session already active";
-        }
+        if( this.sessionManager.length === 1 ) {
 
-        const collectionName = 'session-storage';
-
-        if( !!isClearBetweenCall ) {
-
-            this.regenerate( collectionName );
+            return this.sessionManager[0];
         } else {
 
-            this.addCollection( collectionName );
+            return this.sessionManager;
         }
-
-        this.sessionOptions = {
-            collectionName,
-            expires: typeof expires === "number" ? expires: (1e3*60*60)
-        };
-
-        this.isStartSession = true;
-
-        this.onClearSession = this.onClearSession.bind( this );
-
-        this.expiresID = setInterval( this.onClearSession , expires );
-
-        this.onRequest = this.onRequest.bind( this );
-
-        return this.onRequest;
     },
 
-    sessionStop() {
+    addSessionManager( sessionManager ) {
 
-        if( !this.isStartSession ) {
-
-            throw "session is not active";
-        }
-
-        this.deleteCollection( this.sessionOptions.collectionName );
-        clearInterval( this.expiresID );
-        this.isStartSession = false;
-    },
-
-    onClearSession() {
-
-        const { expires } = this.sessionOptions;
-
-        this.getSessionDocs()
-        .forEach( pathDoc => {
-
-            const session = require( pathDoc );
-
-            if ( Date.now() - ( session.lastUpdate ) >= expires ) {
-
-                // free session doc
-                fs.unlinkSync( pathDoc );
-            }
-
-        } );
-
-    },
-
-    getSessionDocs() {
-
-        const {collectionName} = this.sessionOptions;
-
-        return fs.readdirSync( pathResolver.join( this.pathCollectionList, collectionName ) , {
-            encoding: 'utf-8',
-            withFileTypes: true
-        } ).map( docname => {
-
-            if( typeof docname === "object" ) {
-                docname = docname.name;
-            }
-
-            return this.getPathDoc(
-                collectionName,
-                this.extractDocId( docname )
-            )
+        this.sessionManager.push( {
+            manager: sessionManager,
+            collectionName: sessionManager.storageName
         } );
     },
 
-    getClientHTTP( userAgent ) {
+    sessionStart( {
+        expires = ( 1e3 * 60 * 60 ), // 1hours default expires session
+        clear = true
+    } ) {
 
-        const {collectionName} = this.sessionOptions;
-        let backSession = null;
-
-        this.getSessionDocs()
-        .forEach( pathDoc => {
-
-            if( this.isClientHTTP( pathDoc, userAgent ) ) {
-
-                backSession = require( pathDoc );
-            }
-
-        } );
-
-        if( !backSession ) {
-
-            const newSession = {
-                userAgent,
-                lastUpdate: Date.now()
-            };
-
-            this.addDoc(
-                collectionName,
-                newSession
-            );
-
-            backSession = newSession;
+        if( !!clear ) {
+            ManagerSession.clearStorage( Storage );
         }
 
-        return backSession;
-    },
+        const sessionManager = new ManagerSession({
+            expires,
+            storage: Storage
+        });
 
-    isClientHTTP( pathDoc, userAgent ) {
+        this.addSessionManager( sessionManager );
 
-        let isClient = false;
-
-        if( fs.existsSync( pathDoc ) ) {
-
-            const session = require( pathDoc );
-
-            isClient = session.userAgent === userAgent;
-
-        }
-
-        return isClient;
-
-
-    },
-
-    /**
-     * middleware, for usage Storage as handler session HTTP
-     * user recognize with user-agent
-     */
-    onRequest( request, response, next ) {
-        const session = this.getClientHTTP( request.headers['user-agent'] );
-
-
-        request.session = session;
-
-        request.session.save = () => {
-            // remove this method for not try save
-            // circular structure JSON
-            // use save method after change
-            // for upgrade lastUpdate at
-            // for clear session data after expires delay
-
-            const saveFunc = request.session.save;
-            delete request.session.save;
-
-            request.session.lastUpdate = Date.now();
-
-            this.getSessionDocs()
-            .forEach( pathDoc => {
-
-                if( this.isClientHTTP(
-                    pathDoc, request.session.userAgent
-                ) ) {
-
-                    fs.writeFileSync(
-                        pathDoc,
-                        JSON.stringify( request.session ),
-                        'utf-8'
-                    );
-                }
-
-            } );
-
-            request.session.save = saveFunc;
-        } ;
-
-        // free midlleware
-        if( next instanceof Function ) {
-            next();
-        }
+        return sessionManager.onRequest;
     },
 
     // read only
