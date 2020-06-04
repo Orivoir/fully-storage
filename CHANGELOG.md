@@ -1,3 +1,8 @@
+# 1.4.0
+
+- Refactoring **ManagerSession** (df949feee742d7c16668f08373f552d365f0b1d2)
+- add `autoSave` attribute for not forced call method `save` after each update session data (382b416178a963a0e3ef2de8539b80ff6d1ea46d)
+
 # 1.3.2
 
 - Optimize README.md add link to example app usage manager session HTTP
