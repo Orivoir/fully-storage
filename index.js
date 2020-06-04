@@ -50,7 +50,8 @@ const Storage = {
 
     sessionStart( {
         expires = ( 1e3 * 60 * 60 ), // 1hours default expires session
-        clear = true
+        clear = true,
+        autoSave = true
     } ) {
 
         if( !!clear ) {
@@ -59,6 +60,7 @@ const Storage = {
 
         const sessionManager = new ManagerSession({
             expires,
+            autoSave,
             storage: Storage
         });
 

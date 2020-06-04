@@ -550,11 +550,13 @@ const onRequest = fullyStorage.sessionStart({
     // time in ms default 1hours
     expires: ( 1e3 * 60 * 60 ),
 
+    autoSave: true,
+
     // if the session store is clear between 2 call to sessionStart for prod
     // should be true
     // for dev if you want persist your session data
     // between on/off app you can give false value
-    isClearBetweenCall: true,
+    clear: true,
 
 });
 
@@ -565,7 +567,11 @@ const server = http.createServer( function( request, response ) {
     if( !request.session.test ) {
 
         request.session.test = Math.random();
-        request.session.save();
+
+        // if you have not 'autoSave' with: true value
+        // you should mannually call method save after update session
+        // for persist new session data,
+        // request.session.save();
     }
 
     res.end( `test session value is: ${request.session.test}` );
@@ -574,7 +580,7 @@ const server = http.createServer( function( request, response ) {
 
 ```
 
-### session-stop
+### session stop
 
 If you want manually destroy the manager session you can call:
 `fullyStorage.sessionStop()`
@@ -595,7 +601,8 @@ const server = require('http').Server( app );
 const fullyStorage = require('fully-storage');
 
 const sessionMiddleware = fullyStorage.sessionStart( {
-    expires: ( 1e3 * 60 * 60 ) // 1hours
+    expires: ( 1e3 * 60 * 60 ), // 1hours
+    autoSave: true
 } ) ;
 
 app.use( sessionMiddleware );
@@ -605,7 +612,6 @@ app.get('/', (request, response) => {
     if( !request.session.test ) {
 
         request.session.test = Math.random();
-        request.session.save();
     }
 
     response.type('plain/text');
