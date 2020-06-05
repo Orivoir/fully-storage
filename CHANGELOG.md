@@ -1,3 +1,8 @@
+# 1.4.5
+
+- Added API implemented by **package** [fully-storage-faker-api](https://npmjs.com/package/fully-storage-faker-api)
+- Upgrade **README.md**
+
 # 1.4.0
 
 - Refactoring **ManagerSession** (df949feee742d7c16668f08373f552d365f0b1d2)
