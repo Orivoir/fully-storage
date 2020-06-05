@@ -1,3 +1,8 @@
+# 1.5.0
+
+- Added usage **generator fixtures** from **CLI** #8
+- Upgrade **README.md**
+
 # 1.4.5
 
 - Added API implemented by **package** [fully-storage-faker-api](https://npmjs.com/package/fully-storage-faker-api)

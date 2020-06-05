@@ -1,0 +1,51 @@
+/**
+* @file fixtures of: `<::MARKER_COLLECTION_NAME::>` collection
+*/
+class <::MARKER_COLLECTION_NAME|capitalize::>Fixtures {
+
+    /**
+    * @var LOCALITY {string} - language use for generate factory data
+    */
+    static LOCALITY = "en_US";
+
+    constructor( faker ) {
+
+        this.faker = faker;
+
+        this.faker.options = {
+
+            collectionName: '<::MARKER_COLLECTION_NAME::>',
+
+            AUTO_SAVE_ID: true
+        };
+
+        this.onGenerate = this.onGenerate.bind( this );
+    }
+
+    /**
+    * @method onLoad - this method is use by **CLI** for load you'r data fixtures, **do not change method name**
+    */
+    onLoad() {
+
+        const numberDocs = 5;
+
+        this.faker.forEach( numberDocs, this.onGenerate )
+    }
+
+    onGenerate( generator ) {
+
+        const <::MARKER_COLLECTION_NAME|lower::> = {};
+
+        /**
+        * @TODO use generator for create factory data
+        *
+        * generator is a faker object
+        * reference: https://npmjs.com/package/faker
+        */
+
+        return <::MARKER_COLLECTION_NAME|lower::>;
+    }
+
+};
+
+module.exports = <::MARKER_COLLECTION_NAME|capitalize::>Fixtures;

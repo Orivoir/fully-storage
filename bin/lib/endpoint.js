@@ -8,6 +8,8 @@ const collectionsDump = require('./collections-dump');
 const dump = require('./dump');
 const _import = require('./import');
 const regenerate = require('./regenerate');
+const fixtures = require('./fixtures');
+const fixturesLoad = require('./fixtures-load');
 
 module.exports = {
     version,
@@ -19,5 +21,7 @@ module.exports = {
     collectionsDump,
     dump,
     _import,
-    regenerate
+    regenerate,
+    fixtures,
+    fixturesLoad
 };
