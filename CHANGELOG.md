@@ -1,6 +1,6 @@
-# 1.5.0
+# [1.5.0](https://github.com/Orivoir/fully-storage/releases/tag/1.5.0)
 
-- Added usage **generator fixtures** from **CLI** #8
+- Added usage **generator fixtures** from **CLI** (bac27bbb81c5d2390d3b78179fed16bac26d661c)
 - Upgrade **README.md**
 
 # 1.4.5
