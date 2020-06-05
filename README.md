@@ -26,7 +26,7 @@
             - [add user](#add-user)
             - [authentication](#authentication)
             - [get user](#get-user)
-        - [fixtures]
+        - [fixtures](#fixtures)
             - [create faker](#create-faker)
             - [generate fixtures](#generate-fixtures)
 - [HTTP session manager](#http-session-manager)
@@ -521,7 +521,7 @@ The method: `getUserBy` return a array of `users`
 if **0** users have found return empty array
 
 
-### Fixtures
+### fixtures
 
 Fixtures is a **API** implemented from [fully-storage-faker-api](https://www.npmjs.com/package/fully-storage-faker-api)
 you can auto generate **data fixtures** and **auto push docs** inside your storage, easy create **factory data** for you'r *dev env*
