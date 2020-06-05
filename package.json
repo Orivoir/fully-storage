@@ -49,7 +49,7 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "cliui": "^6.0.0",
-    "fully-storage-faker-api": "^1.0.0",
+    "fully-storage-faker-api": "^1.0.1",
     "fully-storage-users-api": "^1.0.3"
   }
 }
