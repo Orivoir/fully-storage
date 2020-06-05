@@ -7,10 +7,11 @@
 // > storage --delete-doc collectionName(.|-|->|=>)docId
 // > storage --clear
 // > storage --version
-
 // > storage --collections?-(list|dump|show)
-
 // > storage --(list|dump|show) collectionName
+
+// > storage --fixtures {collectionName}
+// > storage --fixtures-load ?{collectionName}
 
 const
     argsNotParams = [],
@@ -57,7 +58,9 @@ const
         collectionsDump,
         dump,
         _import,
-        regenerate
+        regenerate,
+        fixtures,
+        fixturesLoad
     } = require('./lib/endpoint'),
     Storage = require('./../index')
 ;
@@ -97,7 +100,6 @@ if( isExistsArg( 'version' ) ) {
 
 } else if( isExistsArg( 'add-collection' ) ) {
 
-
     addCollection();
 
 } else if( isExistsArgWithPattern( /collections?\-(list|dump|show)/i ) )  {
@@ -117,6 +119,27 @@ if( isExistsArg( 'version' ) ) {
 } else if( isExistsArgWithPattern( /(regenerate|truncate)/i ) ) {
 
     regenerate();
+} else if( isExistsArg( 'fixtures' ) ) {
+
+    let collectionName = argsNotParams[0];
+
+    if( !COLLECTION_AND_DOC_PATTERN.test( collectionName ) ) {
+
+        console.log(
+            chalk`{bold.red Error:} collection name: {bold.cyan ${collectionName}} invalid`
+        );
+
+        process.exit( null );
+    }
+
+    collectionName = collectionName.trim();
+
+
+    fixtures( collectionName );
+
+} else if( isExistsArg( 'fixtures-load' ) ) {
+
+    fixturesLoad();
 }
 
 else {

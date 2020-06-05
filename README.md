@@ -1,6 +1,6 @@
 # [fully-storage](https://npmjs.com/package/fully-storage)
 
-> fully-storage is a simple **no-sql** data store with an **HTTP session** manager implemented
+> fully-storage is a simple **no-sql** data store with an **HTTP session** manager implemented , **generator fixtures** and more...
 
 [![Node.js CI](https://github.com/Orivoir/fully-storage/workflows/Node.js%20CI/badge.svg)](https://github.com/Orivoir/fully-storage/actions)
 
@@ -45,6 +45,9 @@
     - [dump](#dump)
         - [dump collections list](#dump-collections-list)
         - [dump docs list](#dump-docs-list)
+    - [cli fixtures](#cli-fixtures)
+        - [make fixtures](#make-fixtures)
+        - [load fixtures](#load-fixtures)
 
 ## installtation
 
@@ -526,6 +529,8 @@ if **0** users have found return empty array
 Fixtures is a **API** implemented from [fully-storage-faker-api](https://www.npmjs.com/package/fully-storage-faker-api)
 you can auto generate **data fixtures** and **auto push docs** inside your storage, easy create **factory data** for you'r *dev env*
 
+You can use CLI for [automate work fixtures](#cli-fixtures)
+
 #### create faker
 
 For create a new faker you should call the method: `fullyStorage.createFaker( ?locality: string ): GeneratorFixtures`
@@ -583,6 +588,8 @@ Arg 1 `generator` is a [faker](https://npmjs.com/package/faker) object based on 
 This code should append 10 new articles inside `articles` collection
 
 for show this results you can use [CLI](#cli-usage) implemented by **fully-storage** for **dump collection**
+
+You can **generate a fixtures file base** and **automate load fixtures** with the [CLI implemented](#cli-fixtures)
 
 ## http session manager
 
@@ -836,7 +843,6 @@ if you have create 0 collection the command is reject.
 
 #### dump-docs-list
 
-
 ```bash
 > npm run store -- --dump articles
 ```
@@ -865,3 +871,83 @@ output should have this format:
 ```
 
 if collection name not exists the command is reject.
+
+
+### cli fixtures
+
+The **CLI** can build base fixtures file for you and auto load fixtures files
+
+#### make fixtures
+
+create a new fixtures file for a specific collection
+
+```bash
+> npm run store -- --fixtures articles
+```
+
+```bash
+> ./node_modules/bin/storage --fixtures articles
+```
+
+append a new folders `fixtures` at root of you'r project and add inside the `fixtures` folders a fixture file with this format: `{collectionName}.js`
+and a **static file** for autload fixture: `load.js`
+
+- /root
+
+    - /fixtures
+        - {collectionName}.js
+        - load.js
+
+you can write your fixtures from the file: `{collectionName}.js` inside the `onGenerate` method
+
+fixture file:
+```js
+
+onGenerate( generator ) {
+
+    const article = {};
+
+    /**
+    * @TODO use generator for create factory data
+    *
+    * generator is a faker object
+    * reference: https://npmjs.com/package/faker
+    */
+
+    return article;
+}
+```
+
+use the api [faker](#fixtures) for create you'r factory data,
+
+*e.g*:
+```js
+
+onGenerate( generator ) {
+
+    const article = {};
+
+    article.title = generator.lorem.words( 5 );
+
+    const sentenceCount = 4;
+    const separator = ' ';
+
+    article.contentText = generator.lorem.sentences( sentenceCount, separator );
+
+    article.createAt = generator.date.betweeen( 'now', '-15days' );
+
+    return article;
+}
+```
+
+#### load fixtures
+
+After write your body fixtures you can load files with one command:
+
+```bash
+> npm run store -- --fixtures-load
+```
+
+```bash
+> ./node_modules/bin/storage --fixtures-load
+```
