@@ -26,6 +26,9 @@
             - [add user](#add-user)
             - [authentication](#authentication)
             - [get user](#get-user)
+        - [fixtures]
+            - [create faker](#create-faker)
+            - [generate fixtures](#generate-fixtures)
 - [HTTP session manager](#http-session-manager)
     - [session start](#session-start)
     - [session stop](#session-stop)
@@ -518,6 +521,69 @@ The method: `getUserBy` return a array of `users`
 if **0** users have found return empty array
 
 
+### Fixtures
+
+Fixtures is a **API** implemented from [fully-storage-faker-api](https://www.npmjs.com/package/fully-storage-faker-api)
+you can auto generate **data fixtures** and **auto push docs** inside your storage, easy create **factory data** for you'r *dev env*
+
+#### create faker
+
+For create a new faker you should call the method: `fullyStorage.createFaker( ?locality: string ): GeneratorFixtures`
+
+```js
+
+const locality = "en_US";
+
+const faker = fullyStorage.createFaker( locality );
+
+```
+
+Arg 1 `locality` is optional because default value is `en_US`
+
+#### generate fixtures
+
+Before create fixtures, you should use attribute `options` for specified `collection` target of **fixtures data**
+
+```js
+
+faker.options.collectionName = "articles";
+
+```
+
+if `articles` collection not exists she auto create
+
+Now you can generate fixtures data
+
+```js
+
+// number docs to create
+const manyTimes = 10;
+
+faker.forEach( manyTimes, function( generator ) {
+
+    const article = {};
+
+    article.title = generator.lorem.words( 5 );
+
+    const sentenceCount = 4;
+    const separator = ' ';
+
+    article.contentText = generator.lorem.sentences( sentenceCount, separator );
+
+    article.createAt = generator.date.betweeen( 'now', '-60days' );
+
+    return article;
+
+}  );
+
+```
+
+Arg 1 `generator` is a [faker](https://npmjs.com/package/faker) object based on faker package,
+
+This code should append 10 new articles inside `articles` collection
+
+for show this results you can use [CLI](#cli-usage) implemented by **fully-storage** for **dump collection**
+
 ## http session manager
 
 You can use fully-storage as manager HTTP session,
@@ -528,7 +594,7 @@ manager session:
 - /node_modules
     - /fully-storages
         - /collections
-            - /session-store
+            - /session-store{random-id}
 
 fully-storage create a collection for stock the session with the name
 session-store, you should not use this name for another collection

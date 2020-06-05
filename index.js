@@ -1,6 +1,7 @@
 const fs = require('fs');
 const pathResolver = require('path');
 const UsersApi = require('fully-storage-users-api');
+const GeneratorFixtures = require('fully-storage-faker-api');
 const ManagerSession = require('./lib/manager-session/manager-session');
 
 if( !fs.existsSync(
@@ -525,6 +526,43 @@ const Storage = {
             throw new RangeError('Storage Error: addUsersCollection method arg1: config ,should be a object');
         }
 
+    },
+
+    createFaker( locality ) {
+
+        const faker = new GeneratorFixtures({
+            locality,
+
+            isAppendOneTime: false,
+
+            onAppend: this.onAppendFixtures
+        });
+
+        return faker;
+    },
+
+    onAppendFixtures( {
+        options,
+        state
+    } ) {
+
+        const {collectionName} = options;
+
+        if( typeof collectionName !== "string" ) {
+
+            throw new RangeError("fully-storage fixtures error: you should set: faker.options.collectionName, before execute fixtures");
+        }
+
+        if( !Storage.isExistsCollection( collectionName ) ) {
+
+            Storage.addCollection( collectionName );
+        }
+
+        Storage.addDoc(
+            collectionName,
+            state,
+            !!options.AUTO_SAVE_ID
+        );
     }
 };
 
