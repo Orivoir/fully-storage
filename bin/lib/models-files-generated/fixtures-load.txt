@@ -15,7 +15,9 @@ const load = pathFixturesFile => {
 
     const Fixtures = require( pathFixturesFile );
 
-    // faker.locality = Fixtures.locality;
+    faker.locality = Fixtures.LOCALITY;
+
+    console.log(`\n\t> start load ${pathResolver.basename(pathFixturesFile)} with: '${faker.locality}'`);
 
     const fixture = new Fixtures( faker );
 

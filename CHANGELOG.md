@@ -1,3 +1,8 @@
+# 1.5.2
+
+- Fix syntax show version form CLI command
+- Added **usage locality for load fixtures from CLI** [issue](https://github.com/Orivoir/fully-storage/issues/14)
+
 # 1.5.1
 
 - Added link git to app example usage **fixtures API** *[example usage app](https://github.com/Orivoir/fully-storage-fixtures)*

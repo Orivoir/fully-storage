@@ -1,6 +1,6 @@
 {
   "name": "fully-storage",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "is a simple no-sql data store with an HTTP session manager implemented",
   "main": "index.js",
   "directories": {
@@ -49,7 +49,7 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "cliui": "^6.0.0",
-    "fully-storage-faker-api": "^1.0.1",
+    "fully-storage-faker-api": "^1.0.2",
     "fully-storage-users-api": "^1.0.3"
   }
 }
