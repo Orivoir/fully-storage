@@ -1,3 +1,7 @@
+# 1.5.1
+
+- Added link git to app example usage **fixtures API** *[example usage app](https://github.com/Orivoir/fully-storage-fixtures)*
+
 # [1.5.0](https://github.com/Orivoir/fully-storage/releases/tag/1.5.0)
 
 - Added usage **generator fixtures** from **CLI** (bac27bbb81c5d2390d3b78179fed16bac26d661c)

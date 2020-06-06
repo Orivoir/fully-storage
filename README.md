@@ -69,6 +69,8 @@ yarn add fully-storage
 
 [storage nosql inside easy articles app](https://github.com/Orivoir/fully-storage-factory)
 
+[fixtures API inside easy articles app](https://github.com/Orivoir/fully-storage-fixtures)
+
 ## store
 
 The data store and stored in folders called collections and the entries are stored in JSON files called doc inside the fully-storage collections created one file per entry.
@@ -531,6 +533,8 @@ you can auto generate **data fixtures** and **auto push docs** inside your stora
 
 You can use CLI for [automate work fixtures](#cli-fixtures)
 
+You can see a example usage **fixtures API** inside a [easy app](https://github.com/Orivoir/fully-storage-fixtures)
+
 #### create faker
 
 For create a new faker you should call the method: `fullyStorage.createFaker( ?locality: string ): GeneratorFixtures`
@@ -876,6 +880,8 @@ if collection name not exists the command is reject.
 ### cli fixtures
 
 The **CLI** can build base fixtures file for you and auto load fixtures files
+
+You can see a example usage fixtures from **CLI** inside a [easy app](https://github.com/Orivoir/fully-storage-fixtures)
 
 #### make fixtures
 
