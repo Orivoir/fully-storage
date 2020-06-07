@@ -222,11 +222,23 @@ The method `fullyStorage.getDoc` return `null` if not found doc.
 
 ### docs list
 
-You can have needs get all docs of any collection for your interface, API or any sorted of data,
-you can use the method: `fullyStorage.getDocsList( collectionName )` for get the list of docnames inside the collection name
+You can have needs get all docs of any collection for your interface, API or any sorted of data.
 
 ```js
 
+const articles = fullyStorage.get('articles');
+
+console.log( articles );
+
+```
+
+The method: `get` return **array objects** docs of collection.
+
+before the version `1.5.4` for get **docs** of collection, you should
+use the method: `getDocsList` this method return **array docsname** and
+*loop* docsname for **get doc by docname**.
+
+```js
 
 const articles = [];
 

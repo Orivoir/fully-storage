@@ -1,7 +1,10 @@
+# 1.5.4
+
+- Add method: `get( collectionName: string ): object[]` because `getDocsList` return *docsname list* [issue](https://github.com/Orivoir/fully-storage/issues/16)
+
 # 1.5.3
 
 - Fix **fixtures load** from **CLI** is append, add call to `regenerate` collection before load [issue](https://github.com/Orivoir/fully-storage/issues/13)
-
 - Add **output log** to `regenerate` CLI command *muted* [issue](https://github.com/Orivoir/fully-storage/issues/3)
 
 # 1.5.2

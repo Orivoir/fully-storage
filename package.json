@@ -1,6 +1,6 @@
 {
   "name": "fully-storage",
-  "version": "1.5.2",
+  "version": "1.5.4",
   "description": "is a simple no-sql data store with an HTTP session manager implemented",
   "main": "index.js",
   "directories": {

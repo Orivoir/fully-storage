@@ -502,6 +502,13 @@ const Storage = {
         } );
     },
 
+    get( collectionName ) {
+
+        return this.getDocsList( collectionName ).map( docname => (
+            this.getDocByDocname( docname )
+        ) );
+    },
+
     addUsersCollection( config ) {
 
         UsersApi.STORAGE_METHODS_NAME_IMPLEMENTS.forEach( methodName => {
