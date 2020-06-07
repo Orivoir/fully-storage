@@ -2,6 +2,8 @@
 
 - Fix **fixtures load** from **CLI** is append, add call to `regenerate` collection before load [issue](https://github.com/Orivoir/fully-storage/issues/13)
 
+- Add **output log** to `regenerate` CLI command *muted* [issue](https://github.com/Orivoir/fully-storage/issues/3)
+
 # 1.5.2
 
 - Fix syntax show version form CLI command
