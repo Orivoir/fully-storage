@@ -17,6 +17,10 @@ const load = pathFixturesFile => {
 
     faker.locality = Fixtures.LOCALITY;
 
+    const collectionName = pathResolver.basename(pathFixturesFile).split('.').slice( 0, -1 ).join('.');
+
+    fullyStorage.regenerate( collectionName );
+
     console.log(`\n\t> start load ${pathResolver.basename(pathFixturesFile)} with: '${faker.locality}'`);
 
     const fixture = new Fixtures( faker );

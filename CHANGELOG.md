@@ -1,3 +1,7 @@
+# 1.5.3
+
+- Fix **fixtures load** from **CLI** is append, add call to `regenerate` collection before load [issue](https://github.com/Orivoir/fully-storage/issues/13)
+
 # 1.5.2
 
 - Fix syntax show version form CLI command
