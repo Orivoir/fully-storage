@@ -73,5 +73,15 @@
         "args": 1,
         "argsType": ["object"],
         "output": "function"
+    },
+    "createFaker": {
+        "args": "1",
+        "argsType": ["string"],
+        "output": "object"
+    },
+    "onAppendFixtures": {
+        "args": 1,
+        "argsType": ["object"],
+        "output": "undefined"
     }
 }
