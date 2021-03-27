@@ -3,12 +3,13 @@ const pathResolver = require('path');
 const UsersApi = require('fully-storage-users-api');
 const GeneratorFixtures = require('fully-storage-faker-api');
 const ManagerSession = require('./lib/manager-session/manager-session');
+var appRoot = require('app-root-path').resolve('');
 
 if( !fs.existsSync(
-    pathResolver.join( __dirname, "collections" )
+    pathResolver.join( appRoot, "collections" )
 ) ) {
     fs.mkdirSync(
-       pathResolver.join( __dirname, "collections" )
+       pathResolver.join( appRoot, "collections" )
     );
 }
 
@@ -74,7 +75,7 @@ const Storage = {
     get pathCollectionList() {
 
         return pathResolver.join(
-            __dirname, '/collections'
+            appRoot, '/collections'
         );
     },
 

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const pathResolver = require('path');
+var appRoot = require('app-root-path').resolve('');
 
 function resolveBaseFile( baseFile, collectionName ) {
 
@@ -62,7 +63,7 @@ module.exports = function( collectionName ) {
     }
 
     const baseFixtures = fs.readFileSync(
-        pathResolver.join( __dirname, './models-files-generated/fixture-base.txt' ),
+        pathResolver.join( appRoot, './models-files-generated/fixture-base.txt' ),
         'utf-8'
     );
 
@@ -81,7 +82,7 @@ module.exports = function( collectionName ) {
     if( !fs.existsSync( loadPathFile ) ) {
 
         const loadFileContent = fs.readFileSync(
-            pathResolver.join( __dirname, './models-files-generated/fixtures-load.txt' ),
+            pathResolver.join( appRoot, './models-files-generated/fixtures-load.txt' ),
             'utf-8'
         );
 
