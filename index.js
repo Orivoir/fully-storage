@@ -328,10 +328,10 @@ const Storage = {
         if( !this.isExistsCollection( collectionName ) ) {
 
             this.addCollection( collectionName );
-            docId = 0;
+            docId = state.id || 0;
         } else {
 
-            docId = this.countDocs( collectionName );
+            docId = state.id ||  this.countDocs( collectionName );
         }
 
         if( !!autoSaveId ) {
