@@ -215,7 +215,7 @@ const Storage = {
 
         const collectionName = _collectionName || docname.split('-').slice( 0, -1 ).join('-');
 
-        const docId = docname.split('-').pop().split('.')[0];
+        const docId = docname.split(`${collectionName}-`).pop().split('.')[0];
 
         return [ collectionName, docId ];
 
