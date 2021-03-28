@@ -134,9 +134,9 @@ const Storage = {
 
     },
 
-    getPathDocByDocname( docname ) {
+    getPathDocByDocname( docname,collectionName ) {
 
-        return this.getPathDoc( ...this.explodeDocname( docname ) );
+        return this.getPathDoc( ...this.explodeDocname( docname ,collectionName) );
     },
 
     getDoc( collectionName, docId ) {
@@ -155,9 +155,9 @@ const Storage = {
 
     },
 
-    getDocByDocname( docname ) {
+    getDocByDocname( docname ,_collectionName) {
 
-        return this.getDoc( ...this.explodeDocname( docname ) );
+        return this.getDoc( ...this.explodeDocname( docname ,_collectionName) );
     },
 
     getCreateAtDoc( collectionName, docId ) {
@@ -211,9 +211,9 @@ const Storage = {
         return null;
     },
 
-    explodeDocname( docname ) {
+    explodeDocname(docname,_collectionName ) {
 
-        const collectionName = docname.split('-').slice( 0, -1 ).join('-');
+        const collectionName = _collectionName || docname.split('-').slice( 0, -1 ).join('-');
 
         const docId = docname.split('-').pop().split('.')[0];
 
@@ -506,7 +506,7 @@ const Storage = {
     get( collectionName ) {
 
         return this.getDocsList( collectionName ).map( docname => (
-            this.getDocByDocname( docname )
+            this.getDocByDocname( docname ,collectionName)
         ) );
     },
 
