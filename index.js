@@ -5,11 +5,11 @@ const GeneratorFixtures = require('fully-storage-faker-api');
 const ManagerSession = require('./lib/manager-session/manager-session');
 const appRoot = require('app-root-path').resolve('');
 const _ = require('lodash');
-if( !fs.existsSync(
-    pathResolver.join( appRoot, "collections" )
-) ) {
+if (!fs.existsSync(
+    pathResolver.join(appRoot, "collections")
+)) {
     fs.mkdirSync(
-       pathResolver.join( appRoot, "collections" )
+        pathResolver.join(appRoot, "collections")
     );
 }
 
@@ -33,7 +33,7 @@ const Storage = {
 
     getSessionManager() {
 
-        if( this.sessionManager.length === 1 ) {
+        if (this.sessionManager.length === 1) {
 
             return this.sessionManager[0];
         } else {
@@ -42,22 +42,22 @@ const Storage = {
         }
     },
 
-    addSessionManager( sessionManager ) {
+    addSessionManager(sessionManager) {
 
-        this.sessionManager.push( {
+        this.sessionManager.push({
             manager: sessionManager,
             collectionName: sessionManager.storageName
-        } );
+        });
     },
 
-    sessionStart( {
-        expires = ( 1e3 * 60 * 60 ), // 1hours default expires session
-        clear = true,
-        autoSave = true
-    } ) {
+    sessionStart({
+                     expires = (1e3 * 60 * 60), // 1hours default expires session
+                     clear = true,
+                     autoSave = true
+                 }) {
 
-        if( !!clear ) {
-            ManagerSession.clearStorage( Storage );
+        if (!!clear) {
+            ManagerSession.clearStorage(Storage);
         }
 
         const sessionManager = new ManagerSession({
@@ -66,7 +66,7 @@ const Storage = {
             storage: Storage
         });
 
-        this.addSessionManager( sessionManager );
+        this.addSessionManager(sessionManager);
 
         return sessionManager.onRequest;
     },
@@ -80,68 +80,69 @@ const Storage = {
     },
 
     // TRUNCATE
-    regenerate( collectionName ) {
+    regenerate(collectionName) {
 
-        this.deleteCollection(  collectionName )
-        this.addCollection( collectionName );
+        this.deleteCollection(collectionName)
+        this.addCollection(collectionName);
     },
 
-    isExistsCollection( collectionName ) {
+    isExistsCollection(collectionName) {
 
         const pathCollection = pathResolver.join(
             this.pathCollectionList,
             collectionName
         );
-        return !!fs.existsSync( pathCollection );
+        return !!fs.existsSync(pathCollection);
     },
 
-    isExistsDoc(collectionName, docId ) {
+    isExistsDoc(collectionName, docId) {
 
-        if( this.isExistsCollection( collectionName ) ) {
+        if (this.isExistsCollection(collectionName)) {
 
-            const pathDoc = this.getPathDoc( collectionName, docId );
+            const pathDoc = this.getPathDoc(collectionName, docId);
 
-            return !!fs.existsSync( pathDoc );
+            return !!fs.existsSync(pathDoc);
         }
 
         return false;
 
     },
 
-    getDocName( collectionName, docId ) {
+    getDocName(collectionName, docId) {
 
-        return ( collectionName + '-' + docId ) + '.json';
+        return (collectionName + '-' + docId) + '.json';
 
     },
 
-    extractDocId( docname ) {
+    extractDocId(docname, collectionName) {
 
-        if( typeof docname === "object" ) {
+        if (typeof docname === "object") {
 
             docname = docname.name;
         }
 
-        return parseInt( docname.split('-').pop().split('.')[0].trim() );
+        return docname.split(`${collectionName}-`).pop().split('.')[0];
+        ;
     },
 
-    getPathDoc( collectionName, docId ) {
+    getPathDoc(collectionName, docId) {
 
         return pathResolver.join(
             this.pathCollectionList,
             collectionName,
-            this.getDocName( collectionName, docId )
+            this.getDocName(collectionName, docId)
         );
 
     },
 
-    getPathDocByDocname( docname,collectionName ) {
+    getPathDocByDocname(docname, collectionName) {
 
-        return this.getPathDoc( ...this.explodeDocname( docname ,collectionName) );
+        return this.getPathDoc(...this.explodeDocname(docname, collectionName));
     },
 
-    getDoc( collectionName, docId ) {
+    getDoc(collectionName, docId) {
 
-        if( this.isExistsDoc( collectionName, docId ) ) {
+        if (this.isExistsDoc(collectionName, docId)) {
 
             return require(
                 this.getPathDoc(
@@ -155,16 +156,16 @@ const Storage = {
 
     },
 
-    getDocByDocname( docname ,_collectionName) {
+    getDocByDocname(docname, _collectionName) {
 
-        return this.getDoc( ...this.explodeDocname( docname ,_collectionName) );
+        return this.getDoc(...this.explodeDocname(docname, _collectionName));
     },
 
-    getCreateAtDoc( collectionName, docId ) {
+    getCreateAtDoc(collectionName, docId) {
 
-        const stat = this.getStatDoc( collectionName, docId );
+        const stat = this.getStatDoc(collectionName, docId);
 
-        if( !!stat ) {
+        if (!!stat) {
 
             return stat.birthtimeMs;
 
@@ -174,16 +175,16 @@ const Storage = {
         }
     },
 
-    getCreateAtDocByDocname( docname ) {
+    getCreateAtDocByDocname(docname) {
 
-        return this.getCreateAtDoc( ...this.explodeDocname( docname ) );
+        return this.getCreateAtDoc(...this.explodeDocname(docname));
     },
 
-    getLastUpdateAtDoc( collectionName, docId ) {
+    getLastUpdateAtDoc(collectionName, docId) {
 
-        const stat = this.getStatDoc( collectionName, docId );
+        const stat = this.getStatDoc(collectionName, docId);
 
-        if( !!stat ) {
+        if (!!stat) {
 
             return stat.mtimeMs;
 
@@ -193,82 +194,82 @@ const Storage = {
         }
     },
 
-    getLastUpdateAtDocByDocname( docname ) {
+    getLastUpdateAtDocByDocname(docname) {
 
-        return this.getLastUpdateAtDoc( ...this.explodeDocname( docname ) );
+        return this.getLastUpdateAtDoc(...this.explodeDocname(docname));
 
     },
 
-    getStatDoc( collectionName, docId ) {
+    getStatDoc(collectionName, docId) {
 
-        const pathDoc = this.getPathDoc( collectionName, docId );
+        const pathDoc = this.getPathDoc(collectionName, docId);
 
-        if( fs.existsSync( pathDoc ) ) {
+        if (fs.existsSync(pathDoc)) {
 
-            return fs.statSync( pathDoc );
+            return fs.statSync(pathDoc);
         }
 
         return null;
     },
 
-    explodeDocname(docname,_collectionName ) {
+    explodeDocname(docname, _collectionName) {
 
-        const collectionName = _collectionName || docname.split('-').slice( 0, -1 ).join('-');
+        const collectionName = _collectionName || docname.split('-').slice(0, -1).join('-');
 
-        const docId = docname.split(`${collectionName}-`).pop().split('.')[0];
+        const docId = this.extractDocId(docname, _collectionName)
 
-        return [ collectionName, docId ];
+        return [collectionName, docId];
 
     },
 
-    getDocBy( collectionName, key, value ) {
+    getDocBy(collectionName, key, value) {
 
-        if( !this.isExistsCollection( collectionName ) ) {
+        if (!this.isExistsCollection(collectionName)) {
 
             return null;
         }
 
         let docFound = null;
 
-        this.getDocsList( collectionName )
-        .every( docname => {
+        this.getDocsList(collectionName)
+            .every(docname => {
 
-            const pathDoc = pathResolver.join(
-                this.pathCollectionList,
-                collectionName,
-                docname
-            );
+                const pathDoc = pathResolver.join(
+                    this.pathCollectionList,
+                    collectionName,
+                    docname
+                );
 
-            if( !fs.existsSync( pathDoc ) ) return;
+                if (!fs.existsSync(pathDoc)) return;
 
-            const doc = require( pathDoc );
+                const doc = require(pathDoc);
 
-            if( doc [ key ] === value ) {
+                if (doc [key] === value) {
 
-                docFound = doc;
-                return docFound;
-            }
+                    docFound = doc;
+                    return docFound;
+                }
 
-        } );
+            });
 
         return docFound;
     },
 
-    findDoc(collectionName,query) {
-        if( !this.isExistsCollection( collectionName ) ) {
+    findDoc(collectionName, query) {
+        if (!this.isExistsCollection(collectionName)) {
 
             return null;
         }
-      return _.find(this.get(collectionName),query);
+        return _.find(this.get(collectionName).filter(Boolean), query);
     },
 
-    countDocs( collectionName, isForce = false ) {
+    countDocs(collectionName, isForce = false) {
 
-        if( !this.isExistsCollection( collectionName ) ) {
+        if (!this.isExistsCollection(collectionName)) {
 
-            if( isForce ) {
+            if (isForce) {
 
-                this.addCollection( collectionName );
+                this.addCollection(collectionName);
                 return 0;
 
             } else {
@@ -292,33 +293,33 @@ const Storage = {
         }
     },
 
-    pushDoc( collectionName, docId, state ) {
+    pushDoc(collectionName, docId, state) {
 
         fs.writeFileSync(
             pathResolver.join(
                 this.pathCollectionList,
                 collectionName,
-                this.getDocName( collectionName, docId )
+                this.getDocName(collectionName, docId)
             ),
-            JSON.stringify( state ),
+            JSON.stringify(state),
             'utf-8'
         );
 
         return docId;
     },
 
-    updateDoc( collectionName, docId, state, isForce = false ) {
+    updateDoc(collectionName, docId, state, isForce = false) {
 
-        if( !this.isExistsDoc( collectionName, docId ) ) {
+        if (!this.isExistsDoc(collectionName, docId)) {
 
-            if( isForce ) {
+            if (isForce) {
 
-                if( !this.isExistsCollection( collectionName ) ) {
+                if (!this.isExistsCollection(collectionName)) {
 
-                    this.addCollection( collectionName );
+                    this.addCollection(collectionName);
                 }
 
-                return this.addDoc( collectionName, state );
+                return this.addDoc(collectionName, state);
 
             } else {
 
@@ -326,26 +327,26 @@ const Storage = {
             }
         }
 
-        return this.pushDoc( collectionName, docId, state );
+        return this.pushDoc(collectionName, docId, state);
 
     },
 
-    addDoc( collectionName, state, autoSaveId = false ) {
+    addDoc(collectionName, state, autoSaveId = false) {
 
         let docId = null;
 
-        if( !this.isExistsCollection( collectionName ) ) {
+        if (!this.isExistsCollection(collectionName)) {
 
-            this.addCollection( collectionName );
+            this.addCollection(collectionName);
             docId = state.id || 0;
         } else {
 
-            docId = state.id ||  this.countDocs( collectionName );
+            docId = state.id || this.countDocs(collectionName);
         }
 
-        if( !!autoSaveId ) {
+        if (!!autoSaveId) {
 
-            state[ ( typeof autoSaveId === "string" ? autoSaveId : "id" ) ] = docId;
+            state[(typeof autoSaveId === "string" ? autoSaveId : "id")] = docId;
         }
 
         this.pushDoc(
@@ -355,9 +356,9 @@ const Storage = {
         return docId;
     },
 
-    deleteDoc( collectionName, docId ) {
+    deleteDoc(collectionName, docId) {
 
-        if( !this.isExistsDoc( collectionName, docId ) ) {
+        if (!this.isExistsDoc(collectionName, docId)) {
 
             return null;
         }
@@ -372,9 +373,9 @@ const Storage = {
 
     },
 
-    deleteCollection( collectionName ) {
+    deleteCollection(collectionName) {
 
-        if( !this.isExistsCollection( collectionName ) ) {
+        if (!this.isExistsCollection(collectionName)) {
 
             return null;
         }
@@ -396,13 +397,13 @@ const Storage = {
         try {
             removeCollection();
 
-        } catch( e ) {
+        } catch (e) {
 
-            if( /^ENOTEMPTY|EPERM $/.test(e.code) ) {
+            if (/^ENOTEMPTY|EPERM $/.test(e.code)) {
                 // if error associate to "Error Not Empty" or "Error Permission"
                 // try remove all files inside collection folder
                 // before remove folder
-                this.clearCollection( collectionName );
+                this.clearCollection(collectionName);
                 removeCollection();
             }
         }
@@ -411,9 +412,9 @@ const Storage = {
 
     },
 
-    clearCollection( collectionName ) {
+    clearCollection(collectionName) {
 
-        if( !this.isExistsCollection( collectionName ) ) {
+        if (!this.isExistsCollection(collectionName)) {
 
             return null;
         }
@@ -426,29 +427,29 @@ const Storage = {
                 encoding: "utf-8",
                 withFileTypes: true
             }
-        ).forEach( docname => {
+        ).forEach(docname => {
 
             this.deleteDoc(
                 collectionName,
-                this.extractDocId( docname )
+                this.extractDocId(docname, collectionName)
             );
 
-        } );
+        });
 
     },
 
     deleteAllCollections() {
 
         this.getCollectionsList()
-        .forEach( collectionName => {
-            this.deleteCollection( collectionName );
-        } );
+            .forEach(collectionName => {
+                this.deleteCollection(collectionName);
+            });
 
     },
 
-    addCollection( collectionName ) {
+    addCollection(collectionName) {
 
-        if( this.isExistsCollection( collectionName ) ) {
+        if (this.isExistsCollection(collectionName)) {
 
             return null;
         } else {
@@ -469,9 +470,9 @@ const Storage = {
 
     getCollectionsList() {
 
-        return fs.readdirSync( this.pathCollectionList, {
+        return fs.readdirSync(this.pathCollectionList, {
             encoding: 'utf-8'
-        } );
+        });
     },
 
     get collectionsList() {
@@ -479,12 +480,12 @@ const Storage = {
         return this.getCollectionsList();
     },
 
-    getDocsList( collectionName, isForce = false ) {
+    getDocsList(collectionName, isForce = false) {
 
-        if( !this.isExistsCollection( collectionName ) ) {
+        if (!this.isExistsCollection(collectionName)) {
 
-            if( !!isForce ) {
-                this.addCollection( collectionName );
+            if (!!isForce) {
+                this.addCollection(collectionName);
             } else {
 
                 return null;
@@ -496,12 +497,12 @@ const Storage = {
             collectionName
         );
 
-        return fs.readdirSync( pathCollection, {
+        return fs.readdirSync(pathCollection, {
             encoding: 'utf-8',
             withFileTypes: true, // get extension files
-        } ).map( item => {
+        }).map(item => {
 
-            if( typeof item === "object" ) {
+            if (typeof item === "object") {
 
                 return item.name;
             } else {
@@ -509,30 +510,30 @@ const Storage = {
                 return item;
             }
 
-        } );
+        });
     },
 
-    get( collectionName ) {
+    get(collectionName) {
 
-        return this.getDocsList( collectionName ).map( docname => (
-            this.getDocByDocname( docname ,collectionName)
-        ) );
+        return this.getDocsList(collectionName).map(docname => (
+            this.getDocByDocname(docname, collectionName)
+        ));
     },
 
-    addUsersCollection( config ) {
+    addUsersCollection(config) {
 
-        UsersApi.STORAGE_METHODS_NAME_IMPLEMENTS.forEach( methodName => {
+        UsersApi.STORAGE_METHODS_NAME_IMPLEMENTS.forEach(methodName => {
 
-            if( this[ methodName ] instanceof Function ) {
+            if (this[methodName] instanceof Function) {
 
                 throw new RangeError('UserAPI already call on this storage.');
             }
 
-        } );
+        });
 
-        if( typeof config === "object" ) {
+        if (typeof config === "object") {
 
-            this.apis.users = new UsersApi( config );
+            this.apis.users = new UsersApi(config);
 
             this.apis.users.storage = this;
 
@@ -545,7 +546,7 @@ const Storage = {
 
     },
 
-    createFaker( locality ) {
+    createFaker(locality) {
 
         const faker = new GeneratorFixtures({
             locality,
@@ -558,21 +559,21 @@ const Storage = {
         return faker;
     },
 
-    onAppendFixtures( {
-        options,
-        state
-    } ) {
+    onAppendFixtures({
+                         options,
+                         state
+                     }) {
 
         const {collectionName} = options;
 
-        if( typeof collectionName !== "string" ) {
+        if (typeof collectionName !== "string") {
 
             throw new RangeError("fully-storage fixtures error: you should set: faker.options.collectionName, before execute fixtures");
         }
 
-        if( !Storage.isExistsCollection( collectionName ) ) {
+        if (!Storage.isExistsCollection(collectionName)) {
 
-            Storage.addCollection( collectionName );
+            Storage.addCollection(collectionName);
         }
 
         Storage.addDoc(
