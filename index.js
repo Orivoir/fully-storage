@@ -231,7 +231,7 @@ const Storage = {
         let docFound = null;
 
         this.getDocsList( collectionName )
-        .forEach( docname => {
+        .every( docname => {
 
             const pathDoc = pathResolver.join(
                 this.pathCollectionList,
@@ -246,6 +246,7 @@ const Storage = {
             if( doc [ key ] === value ) {
 
                 docFound = doc;
+                return docFound;
             }
 
         } );
