@@ -51,6 +51,7 @@
     "cliui": "^6.0.0",
     "fully-storage-faker-api": "^1.0.2",
     "fully-storage-users-api": "^1.0.3",
-    "app-root-path": "^3.0.0"
+    "app-root-path": "^3.0.0",
+    "lodash": "^4.17.21"
   }
 }

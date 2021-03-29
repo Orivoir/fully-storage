@@ -3,8 +3,8 @@ const pathResolver = require('path');
 const UsersApi = require('fully-storage-users-api');
 const GeneratorFixtures = require('fully-storage-faker-api');
 const ManagerSession = require('./lib/manager-session/manager-session');
-var appRoot = require('app-root-path').resolve('');
-
+const appRoot = require('app-root-path').resolve('');
+const _ = require('lodash');
 if( !fs.existsSync(
     pathResolver.join( appRoot, "collections" )
 ) ) {
@@ -252,6 +252,14 @@ const Storage = {
         } );
 
         return docFound;
+    },
+
+    findDoc(collectionName,query) {
+        if( !this.isExistsCollection( collectionName ) ) {
+
+            return null;
+        }
+      return _.find(this.get("collectionName"),query);
     },
 
     countDocs( collectionName, isForce = false ) {
