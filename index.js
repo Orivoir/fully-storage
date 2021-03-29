@@ -259,7 +259,7 @@ const Storage = {
 
             return null;
         }
-      return _.find(this.get("collectionName"),query);
+      return _.find(this.get(collectionName),query);
     },
 
     countDocs( collectionName, isForce = false ) {
