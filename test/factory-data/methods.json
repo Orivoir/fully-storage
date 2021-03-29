@@ -15,7 +15,7 @@
         "output": "string"
     },
     "extractDocId": {
-        "args": 1,
+        "args": 2,
         "argsType": [ "string" ],
         "output": "number"
     },
