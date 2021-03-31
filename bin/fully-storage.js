@@ -73,7 +73,8 @@ global.pkg = pkg;
 global.COLLECTION_AND_DOC_PATTERN = COLLECTION_AND_DOC_PATTERN;
 global.cwd = cwd;
 global.chalk = chalk;
-global.__root = pathResolver.resolve( __dirname, './../' );
+var appRoot = require('app-root-path').resolve('');
+global.__root = pathResolver.resolve( appRoot);
 
 if( isExistsArg( 'version' ) ) {
 

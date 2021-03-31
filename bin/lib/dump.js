@@ -12,7 +12,7 @@ module.exports = function() {
 
         docs.forEach( docname => {
 
-            const pathDoc = Storage.getPathDocByDocname( docname );
+            const pathDoc = Storage.getPathDocByDocname( docname ,collectionName);
 
             const doc = require( pathDoc );
 

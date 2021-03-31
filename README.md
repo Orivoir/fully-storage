@@ -14,6 +14,7 @@
     - [create collection](#create-collection)
     - [create doc](#create-doc)
     - [get doc](#get-doc)
+    - [find doc](#find-doc)
     - [docs list](#docs-list)
     - [update doc](#update-doc)
     - [delete doc](#delete-doc)
@@ -219,6 +220,15 @@ server.listen( 3001, () => {
 
 The method `fullyStorage.getDoc` return `null` if not found doc.
 
+### find doc
+you can query using object keys
+```js
+
+const article = fullyStorage.findDoc('articles',(a => a.author === 'sheldon'));
+
+console.log( article );
+
+```
 
 ### docs list
 
@@ -266,6 +276,9 @@ And its sorted inside:
         - / collections
             - / {collectionName}
                 - {collectionName}-{id}.json
+
+
+    
 
 ### update doc
 
@@ -413,7 +426,7 @@ const config = {
     // default: []
     uniqKeys: [
         'email'
-    ]
+    ],
 
     // key constraints for authorize authentication
     // default: null
@@ -921,7 +934,8 @@ you can write your fixtures from the file: `{collectionName}.js` inside the `onG
 fixture file:
 ```js
 
-onGenerate( generator ) {
+onGenerate( generator )
+{
 
     const article = {};
 
@@ -941,7 +955,8 @@ use the api [faker](#fixtures) for create you'r factory data,
 *e.g*:
 ```js
 
-onGenerate( generator ) {
+onGenerate( generator )
+{
 
     const article = {};
 
