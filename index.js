@@ -144,11 +144,11 @@ const Storage = {
 
         if (this.isExistsDoc(collectionName, docId)) {
 
-            return require(
+            return JSON.parse(fs.readFileSync(
                 this.getPathDoc(
                     collectionName, docId
-                )
-            );
+                ),'UTF8'
+            ));
 
         }
 
@@ -242,7 +242,7 @@ const Storage = {
 
                 if (!fs.existsSync(pathDoc)) return;
 
-                const doc = require(pathDoc);
+                const doc = JSON.parse(fs.readFileSync(pathDoc,'UTF8'));
 
                 if (doc [key] === value) {
 
